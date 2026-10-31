@@ -1,0 +1,27 @@
+package com.example.entity;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Shipment {
+
+    @Id
+    @GeneratedValue(strategy =
+            GenerationType.IDENTITY)
+    private Long id;
+
+    private String shipmentId;
+
+    private Long customerId;
+
+    private String customerName;
+
+    private String pickupAddress;
+
+    private String deliveryAddress;
+
+    private Double weight;
+
+    private String status;
+}

@@ -1,0 +1,54 @@
+package com.example.consumer;
+package com.example.audit.consumer;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+import com.example.event.ShipmentEvent;
+import com.example.audit.service.AuditService;
+
+@Component
+public class AuditConsumer {
+
+    private final AuditService auditService;
+
+    public AuditConsumer(
+            AuditService auditService) {
+
+        this.auditService = auditService;
+    }
+
+    @RabbitListener(
+            queues =
+            "shipment.audit.queue")
+    public void consume(
+            ShipmentEvent event) {
+
+        auditService.saveAudit(event);
+
+        System.out.println();
+
+        System.out.println(
+        "========================");
+
+        System.out.println(
+        "AUDIT SERVICE");
+
+        System.out.println(
+        "========================");
+
+        System.out.println(
+        "Shipment ID : "
+        + event.getShipmentId());
+
+        System.out.println(
+        "Event Type : "
+        + event.getEventType());
+
+        System.out.println(
+        "Audit Saved");
+
+        System.out.println(
+        "========================");
+    }
+}

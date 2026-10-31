@@ -1,0 +1,97 @@
+package com.example.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.example.dto.ShipmentRequest;
+import com.example.service.ShipmentService;
+
+@RestController
+@RequestMapping("/shipments")
+public class ShipmentController {
+
+    private final ShipmentService service;
+
+    public ShipmentController(
+            ShipmentService service) {
+
+        this.service = service;
+    }
+
+    @PostMapping
+    public String createShipment(
+            @RequestBody ShipmentRequest request) {
+
+        return service.createShipment(request);
+    }
+
+    @PutMapping("/{shipmentId}/cancel")
+    public String cancelShipment(
+            @PathVariable String shipmentId) {
+
+        return service.updateStatus(
+                shipmentId,
+                "CANCELLED",
+                "SHIPMENT_CANCELLED");
+    }
+
+    @PutMapping("/{shipmentId}/deliver")
+    public String deliverShipment(
+            @PathVariable String shipmentId) {
+
+        return service.updateStatus(
+                shipmentId,
+                "DELIVERED",
+                "SHIPMENT_DELIVERED");
+    }
+    @PutMapping("/{shipmentId}/pay")
+    public String payShipment(@PathVariable String shipmentId) {
+        return service.updateStatus(
+                shipmentId,
+                "PAID",
+                "SHIPMENT_PAID");
+    }
+
+    @PutMapping("/{shipmentId}/pack")
+    public String packShipment(@PathVariable String shipmentId) {
+        return service.updateStatus(
+                shipmentId,
+                "PACKED",
+                "SHIPMENT_PACKED");
+    }
+
+    @PutMapping("/{shipmentId}/ship")
+    public String shipShipment(@PathVariable String shipmentId) {
+        return service.updateStatus(
+                shipmentId,
+                "SHIPPED",
+                "SHIPMENT_SHIPPED");
+    }
+
+    @PutMapping("/{shipmentId}/fail")
+    public String failShipment(@PathVariable String shipmentId) {
+        return service.updateStatus(
+                shipmentId,
+                "FAILED",
+                "SHIPMENT_FAILED");
+    }
+
+    @PutMapping("/{shipmentId}/assign-delivery")
+    public String assignDelivery(
+            @PathVariable String shipmentId) {
+
+        return service.updateStatus(
+                shipmentId,
+                "DELIVERY_ASSIGNED",
+                "DELIVERY_ASSIGNED");
+    }
+
+    @PutMapping("/{shipmentId}/delivery-failed")
+    public String deliveryFailed(
+            @PathVariable String shipmentId) {
+
+        return service.updateStatus(
+                shipmentId,
+                "DELIVERY_FAILED",
+                "DELIVERY_FAILED");
+    }
+}

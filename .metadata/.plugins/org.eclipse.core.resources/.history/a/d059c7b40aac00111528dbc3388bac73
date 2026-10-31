@@ -1,0 +1,11 @@
+package com.example.config;
+
+@Configuration
+public class JacksonConfig {
+
+    @Bean
+    public MessageConverter converter() {
+
+        return new Jackson2JsonMessageConverter();
+    }
+}

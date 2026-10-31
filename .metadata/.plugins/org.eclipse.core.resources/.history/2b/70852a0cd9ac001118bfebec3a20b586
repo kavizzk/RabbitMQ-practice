@@ -1,0 +1,38 @@
+package com.example.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
+import com.example.entity.ShipmentAudit;
+import com.example.event.ShipmentEvent;
+import com.example.repository.ShipmentAuditRepository;
+
+@Service
+public class AuditService {
+
+   
+    public void saveAudit(
+            ShipmentEvent event) {
+
+        ShipmentAudit audit =
+                new ShipmentAudit();
+
+        audit.setEventId(
+                event.getEventId());
+
+        audit.setShipmentId(
+                event.getShipmentId());
+
+        audit.setEventType(
+                event.getEventType());
+
+        audit.setPayload(
+                event.toString());
+
+        audit.setProcessedAt(
+                LocalDateTime.now());
+
+        repository.save(audit);
+    }
+}

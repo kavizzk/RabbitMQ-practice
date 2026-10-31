@@ -1,0 +1,53 @@
+package com.example.consumer;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+import com.example.analytics.event.ShipmentEvent;
+import com.example.analytics.service.AnalyticsService;
+
+@Component
+public class AnalyticsConsumer {
+
+    private final AnalyticsService analyticsService;
+
+    public AnalyticsConsumer(
+            AnalyticsService analyticsService) {
+
+        this.analyticsService = analyticsService;
+    }
+
+    @RabbitListener(
+            queues = "shipment.analytics.queue")
+    public void consume(
+            ShipmentEvent event) {
+
+        analyticsService.processEvent(
+                event.getEventType());
+
+        System.out.println();
+
+        System.out.println(
+                "======================");
+
+        System.out.println(
+                "ANALYTICS SERVICE");
+
+        System.out.println(
+                "======================");
+
+        System.out.println(
+                "Shipment : "
+                + event.getShipmentId());
+
+        System.out.println(
+                "Event : "
+                + event.getEventType());
+
+        System.out.println(
+                "Analytics Updated");
+
+        System.out.println(
+                "======================");
+    }
+}

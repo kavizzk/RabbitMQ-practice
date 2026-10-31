@@ -1,0 +1,6 @@
+package com.example.repository;
+
+@Repository
+public interface ShipmentRepository
+        extends JpaRepository<Shipment, Long> {
+}

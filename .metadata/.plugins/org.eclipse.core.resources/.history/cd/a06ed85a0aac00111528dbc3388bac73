@@ -1,0 +1,13 @@
+package com.example.event;
+
+import java.time.LocalDateTime;
+
+public class ShipmentEvent {
+    private String eventId;
+    private String eventType;
+    private String shipmentId;
+    private Long customerId;
+    private String customerName;
+    private String status;
+    private LocalDateTime timestamp;
+}

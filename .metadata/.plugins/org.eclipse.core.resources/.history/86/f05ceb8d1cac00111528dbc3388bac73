@@ -1,0 +1,174 @@
+package com.example.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
+import com.example.dto.ShipmentRequest;
+import com.example.entity.Shipment;
+import com.example.event.ShipmentEvent;
+import com.example.repository.ShipmentRepository;
+
+@Service
+public class ShipmentService {
+
+    private final ShipmentRepository repository;
+    private final ShipmentEventProducer producer;
+
+    public ShipmentService(
+            ShipmentRepository repository,
+            ShipmentEventProducer producer) {
+
+        this.repository = repository;
+        this.producer = producer;
+    }
+
+    public String createShipment(ShipmentRequest request) {
+
+        String shipmentId =
+                "SHP-" + System.currentTimeMillis();
+
+        Shipment shipment = new Shipment();
+
+        shipment.setShipmentId(shipmentId);
+        shipment.setCustomerId(request.getCustomerId());
+        shipment.setCustomerName(request.getCustomerName());
+        shipment.setPickupAddress(request.getPickupAddress());
+        shipment.setDeliveryAddress(request.getDeliveryAddress());
+        shipment.setWeight(request.getWeight());
+        shipment.setStatus("CREATED");
+
+        System.out.println("Before Save");
+
+        repository.save(shipment);
+
+        System.out.println("After Save");
+
+        ShipmentEvent event = new ShipmentEvent();
+
+        event.setEventId(
+                "EVT-" + System.currentTimeMillis());
+
+        event.setEventType("SHIPMENT_CREATED");
+
+        event.setShipmentId(shipmentId);
+
+        event.setCustomerId(
+                request.getCustomerId());
+
+        event.setCustomerName(
+                request.getCustomerName());
+
+        event.setStatus("CREATED");
+
+        event.setTimestamp(
+                LocalDateTime.now().toString());
+
+        try {
+
+            System.out.println("Before RabbitMQ");
+
+            producer.publish(
+                    event,
+                    "shipment.created");
+
+            System.out.println("After RabbitMQ");
+
+        } catch (Exception e) {
+
+            System.out.println("RabbitMQ Error Occurred");
+
+            e.printStackTrace();
+        }
+
+        return shipmentId;
+    }
+    public String updateStatus(
+            String shipmentId,
+            String status,
+            String eventType) {
+
+        Shipment shipment =
+                repository.findByShipmentId(
+                        shipmentId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Shipment Not Found"));
+
+        shipment.setStatus(status);
+
+        repository.save(shipment);
+
+        ShipmentEvent event =
+                new ShipmentEvent();
+
+        event.setEventId(
+                "EVT-" +
+                System.currentTimeMillis());
+
+        event.setEventType(
+                eventType);
+
+        event.setShipmentId(
+                shipment.getShipmentId());
+
+        event.setCustomerId(
+                shipment.getCustomerId());
+
+        event.setCustomerName(
+                shipment.getCustomerName());
+
+        event.setStatus(
+                shipment.getStatus());
+
+        event.setTimestamp(
+                LocalDateTime.now()
+                .toString());
+
+        String routingKey = "";
+
+        if ("SHIPMENT_CANCELLED"
+                .equals(eventType)) {
+
+            routingKey =
+                    "shipment.cancelled";
+        }
+
+        if ("SHIPMENT_DELIVERED"
+                .equals(eventType)) {
+
+            routingKey =
+                    "shipment.delivered";
+        }
+
+        producer.publish(
+                event,
+                routingKey);
+        if ("SHIPMENT_PAID".equals(eventType)) {
+            routingKey = "shipment.paid";
+        }
+
+        if ("SHIPMENT_PACKED".equals(eventType)) {
+            routingKey = "shipment.packed";
+        }
+
+        if ("SHIPMENT_SHIPPED".equals(eventType)) {
+            routingKey = "shipment.shipped";
+        }
+
+        if ("SHIPMENT_FAILED".equals(eventType)) {
+            routingKey = "shipment.failed";
+        }
+
+        if ("DELIVERY_ASSIGNED".equals(eventType)) {
+            routingKey = "delivery.assigned";
+        }
+
+        if ("DELIVERY_FAILED".equals(eventType)) {
+            routingKey = "delivery.failed";
+        }
+
+        return "Shipment Updated Successfully";
+        
+    }
+}

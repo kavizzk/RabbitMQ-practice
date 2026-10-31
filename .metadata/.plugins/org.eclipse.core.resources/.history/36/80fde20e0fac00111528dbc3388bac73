@@ -1,0 +1,16 @@
+package com.example.service;
+
+package com.example.notification.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class SmsService {
+
+    public void sendSms(String customerName) {
+
+        System.out.println(
+                "SMS sent to : "
+                        + customerName);
+    }
+}

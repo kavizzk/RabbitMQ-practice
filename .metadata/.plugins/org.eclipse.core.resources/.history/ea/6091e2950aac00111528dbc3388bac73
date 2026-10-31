@@ -1,0 +1,12 @@
+package com.example.config;
+
+@Configuration
+public class RabbitMQConfig {
+
+    @Bean
+    public TopicExchange exchange() {
+
+        return new TopicExchange(
+                RabbitMQConstants.EXCHANGE);
+    }
+}

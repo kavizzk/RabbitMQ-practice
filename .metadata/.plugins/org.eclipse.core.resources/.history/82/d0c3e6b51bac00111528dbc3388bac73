@@ -1,0 +1,16 @@
+package com.example.constants;
+
+public class RabbitMQConstants {
+
+    public static final String EXCHANGE =
+            "shipment.exchange";
+
+    public static final String CREATED_KEY =
+            "shipment.created";
+
+    public static final String CANCELLED_KEY =
+            "shipment.cancelled";
+
+    public static final String DELIVERED_KEY =
+            "shipment.delivered";
+}

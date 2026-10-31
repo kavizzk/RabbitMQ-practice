@@ -1,0 +1,101 @@
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class AnalyticsService {
+
+    private int totalShipments;
+    private int created;
+    private int paid;
+    private int packed;
+    private int shipped;
+    private int delivered;
+    private int cancelled;
+    private int failed;
+    private int deliveryAssigned;
+    private int deliveryFailed;
+
+    public void processEvent(String eventType) {
+
+        switch (eventType) {
+
+            case "SHIPMENT_CREATED":
+                created++;
+                totalShipments++;
+                break;
+
+            case "SHIPMENT_PAID":
+                paid++;
+                break;
+
+            case "SHIPMENT_PACKED":
+                packed++;
+                break;
+
+            case "SHIPMENT_SHIPPED":
+                shipped++;
+                break;
+
+            case "SHIPMENT_DELIVERED":
+                delivered++;
+                break;
+
+            case "SHIPMENT_CANCELLED":
+                cancelled++;
+                break;
+
+            case "SHIPMENT_FAILED":
+                failed++;
+                break;
+
+            case "DELIVERY_ASSIGNED":
+                deliveryAssigned++;
+                break;
+
+            case "DELIVERY_FAILED":
+                deliveryFailed++;
+                break;
+        }
+
+        printDashboard();
+    }
+
+    private void printDashboard() {
+
+        System.out.println();
+        System.out.println("=================================");
+        System.out.println("ANALYTICS DASHBOARD");
+        System.out.println("=================================");
+        System.out.println("Total Shipments   : " + totalShipments);
+        System.out.println("Created           : " + created);
+        System.out.println("Paid              : " + paid);
+        System.out.println("Packed            : " + packed);
+        System.out.println("Shipped           : " + shipped);
+        System.out.println("Delivered         : " + delivered);
+        System.out.println("Cancelled         : " + cancelled);
+        System.out.println("Failed            : " + failed);
+        System.out.println("Delivery Assigned : " + deliveryAssigned);
+        System.out.println("Delivery Failed   : " + deliveryFailed);
+        System.out.println("=================================");
+    }
+
+    public AnalyticsResponse getAnalytics() {
+
+        AnalyticsResponse response =
+                new AnalyticsResponse();
+
+        response.setTotalShipments(totalShipments);
+        response.setCreated(created);
+        response.setPaid(paid);
+        response.setPacked(packed);
+        response.setShipped(shipped);
+        response.setDelivered(delivered);
+        response.setCancelled(cancelled);
+        response.setFailed(failed);
+        response.setDeliveryAssigned(deliveryAssigned);
+        response.setDeliveryFailed(deliveryFailed);
+
+        return response;
+    }
+}

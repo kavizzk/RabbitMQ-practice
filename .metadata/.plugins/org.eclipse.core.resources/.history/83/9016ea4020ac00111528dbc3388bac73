@@ -1,0 +1,47 @@
+package com.example.service;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AnalyticsService {
+
+    private int totalShipments;
+    private int created;
+    private int cancelled;
+    private int delivered;
+
+    public synchronized void processEvent(
+            String eventType) {
+
+        switch (eventType) {
+
+            case "SHIPMENT_CREATED":
+                totalShipments++;
+                created++;
+                break;
+
+            case "SHIPMENT_CANCELLED":
+                cancelled++;
+                break;
+
+            case "SHIPMENT_DELIVERED":
+                delivered++;
+                break;
+        }
+    }
+
+    public int getTotalShipments() {
+        return totalShipments;
+    }
+
+    public int getCreated() {
+        return created;
+    }
+
+    public int getCancelled() {
+        return cancelled;
+    }
+
+    public int getDelivered() {
+        return delivered;
+    }
+}

@@ -1,0 +1,30 @@
+package com.example.entity;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="shipment_audit")
+public class ShipmentAudit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String eventId;
+
+    private String shipmentId;
+
+    private String eventType;
+
+    @Column(length = 5000)
+    private String payload;
+
+    private LocalDateTime processedAt;
+
+    public ShipmentAudit() {
+    }
+
+    // Generate Getters and Setters
+}

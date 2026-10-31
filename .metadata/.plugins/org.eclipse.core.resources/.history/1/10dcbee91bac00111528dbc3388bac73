@@ -1,0 +1,46 @@
+package com.example.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.example.dto.ShipmentRequest;
+import com.example.service.ShipmentService;
+
+@RestController
+@RequestMapping("/shipments")
+public class ShipmentController {
+
+    private final ShipmentService service;
+
+    public ShipmentController(
+            ShipmentService service) {
+
+        this.service = service;
+    }
+
+    @PostMapping
+    public String createShipment(
+            @RequestBody ShipmentRequest request) {
+
+        return service.createShipment(request);
+    }
+
+    @PutMapping("/{shipmentId}/cancel")
+    public String cancelShipment(
+            @PathVariable String shipmentId) {
+
+        return service.updateStatus(
+                shipmentId,
+                "CANCELLED",
+                "SHIPMENT_CANCELLED");
+    }
+
+    @PutMapping("/{shipmentId}/deliver")
+    public String deliverShipment(
+            @PathVariable String shipmentId) {
+
+        return service.updateStatus(
+                shipmentId,
+                "DELIVERED",
+                "SHIPMENT_DELIVERED");
+    }
+}

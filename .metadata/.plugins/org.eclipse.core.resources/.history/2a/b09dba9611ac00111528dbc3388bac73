@@ -1,0 +1,33 @@
+package com.example.config;
+import org.springframework.context.annotation.*;
+
+import com.rabbitmq.client.impl.AMQImpl.Queue;
+
+@Configuration
+public class RabbitMQConfig {
+
+    @Bean
+    public Queue auditQueue() {
+
+        return new Queue(
+                "shipment.audit.queue");
+    }
+
+    @Bean
+    public TopicExchange exchange() {
+
+        return new TopicExchange(
+                "shipment.exchange");
+    }
+
+    @Bean
+    public Binding binding(
+            Queue auditQueue,
+            TopicExchange exchange) {
+
+        return BindingBuilder
+                .bind(auditQueue)
+                .to(exchange)
+                .with("shipment.*");
+    }
+}}

@@ -1,0 +1,14 @@
+package com.example.dto;
+
+public class ShipmentRequest {
+
+    private Long customerId;
+
+    private String customerName;
+
+    private String pickupAddress;
+
+    private String deliveryAddress;
+
+    private Double weight;
+}

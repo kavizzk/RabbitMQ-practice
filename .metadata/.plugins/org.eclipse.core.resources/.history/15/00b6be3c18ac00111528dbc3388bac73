@@ -1,0 +1,27 @@
+package com.example.service;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.stereotype.Service;
+
+import com.example.constants.RabbitMQConstants;
+import com.example.event.ShipmentEvent;
+
+@Service
+public class ShipmentEventProducer {
+
+    private final RabbitTemplate rabbitTemplate;
+
+    public ShipmentEventProducer(
+            RabbitTemplate rabbitTemplate) {
+
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    public void publish(ShipmentEvent event) {
+
+        rabbitTemplate.convertAndSend(
+                RabbitMQConstants.EXCHANGE,
+                RabbitMQConstants.CREATED_KEY,
+                event);
+    }
+}

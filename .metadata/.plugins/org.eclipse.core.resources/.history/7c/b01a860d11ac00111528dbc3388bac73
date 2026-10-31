@@ -1,0 +1,17 @@
+package com.example.event;
+
+public class ShipmentEvent {
+
+    private String eventId;
+    private String eventType;
+    private String shipmentId;
+    private Long customerId;
+    private String customerName;
+    private String status;
+    private String timestamp;
+
+    public ShipmentEvent() {
+    }
+
+    // Generate Getters and Setters
+}

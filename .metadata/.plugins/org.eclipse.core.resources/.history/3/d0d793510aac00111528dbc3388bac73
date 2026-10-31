@@ -1,0 +1,22 @@
+package com.example.event;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ShipmentEvent {
+
+    private String eventId;
+
+    private String eventType;
+
+    private String shipmentId;
+
+    private Long customerId;
+
+    private String customerName;
+
+    private String status;
+
+    private LocalDateTime timestamp;
+}

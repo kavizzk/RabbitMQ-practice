@@ -1,0 +1,11 @@
+package com.example.repository;
+
+package com.example.audit.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.audit.entity.ShipmentAudit;
+
+public interface ShipmentAuditRepository
+        extends JpaRepository<ShipmentAudit, Long> {
+}

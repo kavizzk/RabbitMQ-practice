@@ -1,0 +1,14 @@
+package com.example.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.converter.MessageConverter;
+
+@Configuration
+public class JacksonConfig {
+
+    @Bean
+    public MessageConverter converter() {
+
+        return new Jackson2JsonMessageConverter();
+    }
+}

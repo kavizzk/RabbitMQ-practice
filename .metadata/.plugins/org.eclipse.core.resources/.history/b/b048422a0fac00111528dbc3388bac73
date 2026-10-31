@@ -1,0 +1,58 @@
+package com.example.consumer;
+
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+import com.example.notification.event.ShipmentEvent;
+import com.example.notification.service.EmailService;
+import com.example.notification.service.SmsService;
+
+@Component
+public class NotificationConsumer {
+
+    private final EmailService emailService;
+    private final SmsService smsService;
+
+    public NotificationConsumer(
+            EmailService emailService,
+            SmsService smsService) {
+
+        this.emailService = emailService;
+        this.smsService = smsService;
+    }
+
+    @RabbitListener(
+            queues =
+            "shipment.notification.queue")
+    public void consume(
+            ShipmentEvent event) {
+
+        System.out.println();
+        System.out.println(
+                "================================");
+
+        System.out.println(
+                "NOTIFICATION SERVICE");
+
+        System.out.println(
+                "================================");
+
+        System.out.println(
+                "Shipment ID : "
+                        + event.getShipmentId());
+
+        System.out.println(
+                "Event Type  : "
+                        + event.getEventType());
+
+        emailService.sendEmail(
+                event.getCustomerName());
+
+        smsService.sendSms(
+                event.getCustomerName());
+
+        System.out.println(
+                "================================");
+    }
+}

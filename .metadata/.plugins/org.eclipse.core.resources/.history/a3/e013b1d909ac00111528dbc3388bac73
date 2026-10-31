@@ -1,0 +1,38 @@
+package com.example.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Shipment {
+
+    @Id
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    private Long id;
+    private String shipmentId;
+    private Long customerId;
+    private String customerName;
+    private String pickupAddress;
+    private String deliveryAddress;
+    private Double weight;
+    private String status;
+	public Shipment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Shipment(Long id, String shipmentId, Long customerId, String customerName, String pickupAddress,
+			String deliveryAddress, Double weight, String status) {
+		super();
+		this.id = id;
+		this.shipmentId = shipmentId;
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.pickupAddress = pickupAddress;
+		this.deliveryAddress = deliveryAddress;
+		this.weight = weight;
+		this.status = status;
+	}
+    
+}

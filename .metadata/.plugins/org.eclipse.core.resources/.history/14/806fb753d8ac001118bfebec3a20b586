@@ -1,0 +1,66 @@
+package com.example.model;
+
+public class ShipmentAudit {
+
+    private String shipmentId;
+    private String eventType;
+    private String status;
+    private String timestamp;
+
+    public ShipmentAudit() {
+    }
+
+    public ShipmentAudit(
+            String shipmentId,
+            String eventType,
+            String status,
+            String timestamp) {
+
+        this.shipmentId = shipmentId;
+        this.eventType = eventType;
+        this.status = status;
+        this.timestamp = timestamp;
+    }
+
+    public String getShipmentId() {
+        return shipmentId;
+    }
+
+    public void setShipmentId(String shipmentId) {
+        this.shipmentId = shipmentId;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "ShipmentAudit{" +
+                "shipmentId='" + shipmentId + '\'' +
+                ", eventType='" + eventType + '\'' +
+                ", status='" + status + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
+}

@@ -1,0 +1,69 @@
+package com.example.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
+import com.example.shipment.dto.ShipmentRequest;
+import com.example.shipment.entity.Shipment;
+import com.example.shipment.event.ShipmentEvent;
+import com.example.shipment.repository.ShipmentRepository;
+
+@Service
+public class ShipmentService {
+
+    private final ShipmentRepository repository;
+    private final ShipmentEventProducer producer;
+
+    public ShipmentService(
+            ShipmentRepository repository,
+            ShipmentEventProducer producer) {
+
+        this.repository = repository;
+        this.producer = producer;
+    }
+
+    public String createShipment(
+            ShipmentRequest request) {
+
+        String shipmentId =
+                "SHP-" + System.currentTimeMillis();
+
+        Shipment shipment = new Shipment();
+
+        shipment.setShipmentId(shipmentId);
+        shipment.setCustomerId(request.getCustomerId());
+        shipment.setCustomerName(request.getCustomerName());
+        shipment.setPickupAddress(request.getPickupAddress());
+        shipment.setDeliveryAddress(request.getDeliveryAddress());
+        shipment.setWeight(request.getWeight());
+        shipment.setStatus("CREATED");
+
+        repository.save(shipment);
+
+        ShipmentEvent event = new ShipmentEvent();
+
+        event.setEventId(
+                "EVT-" + System.currentTimeMillis());
+
+        event.setEventType(
+                "SHIPMENT_CREATED");
+
+        event.setShipmentId(shipmentId);
+
+        event.setCustomerId(
+                request.getCustomerId());
+
+        event.setCustomerName(
+                request.getCustomerName());
+
+        event.setStatus("CREATED");
+
+        event.setTimestamp(
+                LocalDateTime.now());
+
+        producer.publish(event);
+
+        return shipmentId;
+    }
+}

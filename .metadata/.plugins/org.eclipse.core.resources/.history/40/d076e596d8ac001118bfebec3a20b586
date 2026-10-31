@@ -1,0 +1,45 @@
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.event.ShipmentEvent;
+
+import reactor.core.publisher.Mono;
+
+@Service
+public class AuditService {
+
+    public Mono<String> saveAudit(
+            ShipmentEvent event) {
+
+        return Mono.fromCallable(() -> {
+
+            System.out.println();
+
+            System.out.println(
+                    "========================");
+
+            System.out.println(
+                    "AUDIT SERVICE");
+
+            System.out.println(
+                    "========================");
+
+            System.out.println(
+                    "Shipment ID : "
+                    + event.getShipmentId());
+
+            System.out.println(
+                    "Event Type : "
+                    + event.getEventType());
+
+            System.out.println(
+                    "Audit Processed");
+
+            System.out.println(
+                    "========================");
+
+            return "Audit Saved";
+        });
+    }
+}

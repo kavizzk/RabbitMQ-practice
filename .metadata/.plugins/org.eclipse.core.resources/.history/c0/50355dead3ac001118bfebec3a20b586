@@ -1,0 +1,44 @@
+package com.example.service;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.stereotype.Service;
+
+import com.example.constants.RabbitMQConstants;
+import com.example.event.ShipmentEvent;
+import com.example.stream.ShipmentEventStream;
+
+@Service
+public class ShipmentEventProducer {
+
+    private final RabbitTemplate rabbitTemplate;
+    private final ShipmentEventStream eventStream;
+
+    public ShipmentEventProducer(
+            RabbitTemplate rabbitTemplate,
+            ShipmentEventStream eventStream) {
+
+        this.rabbitTemplate = rabbitTemplate;
+        this.eventStream = eventStream;
+    }
+
+    public void publish(
+            ShipmentEvent event,
+            String routingKey) {
+
+        System.out.println(
+                "PUBLISHING -> "
+                + event.getEventType()
+                + " | "
+                + routingKey);
+
+        rabbitTemplate.convertAndSend(
+                RabbitMQConstants.EXCHANGE,
+                routingKey,
+                event);
+
+        eventStream.publish(
+                event.getEventType()
+                + " -> "
+                + event.getShipmentId());
+    }
+}

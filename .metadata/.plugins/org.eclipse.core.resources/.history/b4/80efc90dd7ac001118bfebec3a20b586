@@ -1,0 +1,14 @@
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailService {
+
+    public void sendEmail(String customerName) {
+
+        System.out.println(
+                "Email sent to : "
+                        + customerName);
+    }
+}
